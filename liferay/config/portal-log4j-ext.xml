@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+        <category name="com.liferay.portal.cluster">
+             <priority value="INFO" />
+        </category>
+
+        <category name="org.jgroups">
+             <priority value="ALL" />
+        </category>
+
+</log4j:configuration>
