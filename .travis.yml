@@ -1,0 +1,16 @@
+sudo: required
+
+language: ruby
+    
+services:
+  - docker
+      
+script:
+  - docker-compose up -d
+  
+after_success:
+  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+  - export REPO=borxa/liferay-cluster-node
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - docker build -f liferay/Dockerfile -t $REPO:$TAG liferay/.
+  - docker push $REPO
