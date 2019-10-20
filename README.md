@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/borxa/docker-liferay7-cluster.svg?branch=master)](https://travis-ci.org/borxa/docker-liferay7-cluster)
+[![Build Status](https://travis-ci.org/borxa/docker-liferay7-cluster.svg?branch=7.2.0)](https://travis-ci.org/borxa/docker-liferay7-cluster)
 # docker-liferay720-cluster
 Docker compose with Liferay 7.2.0 cluster:
   - postgresql
@@ -24,5 +24,5 @@ Docker compose with Liferay 7.2.0 cluster:
 
   # Docker images form repository
 
-  docker pull borxa/liferay-cluster-node:latest
+  docker pull borxa/liferay-cluster-node:7.2.0
 

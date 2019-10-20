@@ -16,9 +16,7 @@ services:
 
   liferay-720-node-1:
     container_name: liferay-720-node-1
-    build:
-      context: liferay/.
-      dockerfile: Dockerfile 
+    image: borxa/liferay-cluster-node:7.2.0
     environment:
       - ES_OPERATIONMODE=REMOTE
       - ES_CLUSTERNAME=elasticsearch
@@ -39,9 +37,7 @@ services:
 
   liferay-720-node-2:
     container_name: liferay-720-node-2
-    build:
-      context: liferay/.
-      dockerfile: Dockerfile 
+    image: borxa/liferay-cluster-node:7.2.0
     ports:
       - '7080:8080'
       - '31311:11311'
