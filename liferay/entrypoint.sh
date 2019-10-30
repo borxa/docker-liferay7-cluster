@@ -37,6 +37,8 @@ function show_motd() {
 	
 	CLUSTER_UNICAST_FILENAME: $CLUSTER_UNICAST_FILENAME
 
+	REDIS_URL: $REDIS_URL
+
   	run as: `id -u -n`
   	"
 }
@@ -124,7 +126,7 @@ function set_cluster_cache() {
 	if [[ ! -z "$CLUSTER_UNICAST_FILENAME" ]]; then
 		sed -i '/cluster\.link\.channel\.properties\.control/s/^\s*#//g' $LIFERAY_HOME/portal-ext.properties
 		sed -i '/cluster\.link\.channel\.properties\.transport\.0/s/^\s*#//g' $LIFERAY_HOME/portal-ext.properties
-        sed -i "s|\(cluster\.link\.channel\.properties\.control=\).*\$|\1${CLUSTER_UNICAST_FILENAME}|" $LIFERAY_HOME/portal-ext.properties
+        	sed -i "s|\(cluster\.link\.channel\.properties\.control=\).*\$|\1${CLUSTER_UNICAST_FILENAME}|" $LIFERAY_HOME/portal-ext.properties
 		sed -i "s|\(cluster\.link\.channel\.properties\.control\.0=\).*\$|\1${CLUSTER_UNICAST_FILENAME}|" $LIFERAY_HOME/portal-ext.properties
   	fi
 	
