@@ -27,6 +27,11 @@ COPY config/wait-for-node.sh /
 
 USER liferay
 
+# Configure Tomcat session cluster
+COPY config/tomcat/server.xml $LIFERAY_HOME/tomcat-9.0.17/conf/
+COPY config/tomcat/context.xml $LIFERAY_HOME/tomcat-9.0.17/conf/
+COPY config/tomcat/web.xml $LIFERAY_HOME/tomcat-9.0.17/conf/
+
 # Configure Liferay
 COPY config/portal-ext.properties $LIFERAY_HOME/
 
