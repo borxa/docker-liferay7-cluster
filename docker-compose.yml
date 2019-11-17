@@ -20,9 +20,19 @@ services:
       context: liferay/.
       dockerfile: Dockerfile 
     environment:
+      - JDBC_READ_DRIVER=org.postgresql.Driver
+      - JDBC_READ_URL=jdbc:postgresql://postgres-lfr720:5432/lportal
+      - JDBC_READ_USERNAME=liferay
+      - JDBC_READ_PASSWORD=liferay
+      - JDBC_WRITE_DRIVER=org.postgresql.Driver
+      - JDBC_WRITE_URL=jdbc:postgresql://postgres-lfr720:5432/lportal
+      - JDBC_WRITE_USERNAME=liferay
+      - JDBC_WRITE_PASSWORD=liferay
       - ES_OPERATIONMODE=REMOTE
       - ES_CLUSTERNAME=elasticsearch
       - ES_TRANSPORTADDRESSES=es-node-1-lfr720:9300
+#      - CLUSTER_UNICAST_FILENAME=jdbc_ping.xml
+#      - REDIS_URL=redis://redis-lfr720:6379
     ports:
       - '6080:8080'
       - '21311:11311'
@@ -42,6 +52,20 @@ services:
     build:
       context: liferay/.
       dockerfile: Dockerfile 
+    environment:
+      - JDBC_READ_DRIVER=org.postgresql.Driver
+      - JDBC_READ_URL=jdbc:postgresql://postgres-lfr720:5432/lportal
+      - JDBC_READ_USERNAME=liferay
+      - JDBC_READ_PASSWORD=liferay
+      - JDBC_WRITE_DRIVER=org.postgresql.Driver
+      - JDBC_WRITE_URL=jdbc:postgresql://postgres-lfr720:5432/lportal
+      - JDBC_WRITE_USERNAME=liferay
+      - JDBC_WRITE_PASSWORD=liferay
+      - ES_OPERATIONMODE=REMOTE
+      - ES_CLUSTERNAME=elasticsearch
+      - ES_TRANSPORTADDRESSES=es-node-1-lfr720:9300
+#     - CLUSTER_UNICAST_FILENAME=jdbc_ping.xml
+#     - REDIS_URL=redis://redis-lfr720:6379
     ports:
       - '7080:8080'
       - '31311:11311'

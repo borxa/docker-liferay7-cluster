@@ -31,6 +31,7 @@ USER liferay
 COPY config/tomcat/server.xml $LIFERAY_HOME/tomcat-9.0.17/conf/
 COPY config/tomcat/context.xml $LIFERAY_HOME/tomcat-9.0.17/conf/
 COPY config/tomcat/web.xml $LIFERAY_HOME/tomcat-9.0.17/conf/
+COPY config/tomcat/web-root.xml $LIFERAY_HOME/tomcat-9.0.17/webapps/ROOT/WEB-INF/web.xml
 
 # Configure Liferay
 COPY config/portal-ext.properties $LIFERAY_HOME/

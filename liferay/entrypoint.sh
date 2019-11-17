@@ -11,6 +11,7 @@ main () {
 	set_resources_data
 	set_elastic_search
 	set_cluster_cache
+	set_redis_session
 
 	run_portal "$@"
 }
@@ -128,12 +129,12 @@ function set_cluster_cache() {
 		sed -i '/cluster\.link\.channel\.properties\.transport\.0/s/^\s*#//g' $LIFERAY_HOME/portal-ext.properties
         	sed -i "s|\(cluster\.link\.channel\.properties\.control=\).*\$|\1${CLUSTER_UNICAST_FILENAME}|" $LIFERAY_HOME/portal-ext.properties
 		sed -i "s|\(cluster\.link\.channel\.properties\.control\.0=\).*\$|\1${CLUSTER_UNICAST_FILENAME}|" $LIFERAY_HOME/portal-ext.properties
-  	fi
 	
-	if ! grep -Fq -- -Djgroups.bind_addr= $LIFERAY_HOME/tomcat-9.0.17/bin/setenv.sh; then
-        	sed -i "s/CATALINA_OPTS=\"[^\"]*/& -Djgroups.bind_addr=$IP/g" $LIFERAY_HOME/tomcat-9.0.17/bin/setenv.sh
-	else
-        	sed -i -E "s/bind_addr=\d+\.\d+\.\d+\.\d+/bind_addr=$IP/g" $LIFERAY_HOME/tomcat-9.0.17/bin/setenv.sh
+		if ! grep -Fq -- -Djgroups.bind_addr= $LIFERAY_HOME/tomcat-9.0.17/bin/setenv.sh; then
+        		sed -i "s/CATALINA_OPTS=\"[^\"]*/& -Djgroups.bind_addr=$IP/g" $LIFERAY_HOME/tomcat-9.0.17/bin/setenv.sh
+		else
+        		sed -i -E "s/bind_addr=\d+\.\d+\.\d+\.\d+/bind_addr=$IP/g" $LIFERAY_HOME/tomcat-9.0.17/bin/setenv.sh
+		fi
 	fi
 
 	echo " Continuing..."
@@ -143,11 +144,10 @@ function set_redis_session() {
 
 	echo "Configuring Redis Session Files ..."
 
-	if [[ -v REDIS_URL ]]; then
+	if [[ ! -z "$REDIS_URL" ]]; then
 
-		REDIS_CONTEXT='<Manager className=\"org.redisson.tomcat.RedissonSessionManager\" configPath=\"${catalina.base}\/conf\/redis
-son.conf\" readMode=\"MEMORY\" updateMode=\"DEFAULT\"\/>'
-		sed '/<\/Context>/ s/.*/'"${REDIS_CONTEXT}"'\n&/' $LIFERAY_HOME/tomcat-9.0.17/conf/context.xml
+		REDIS_CONTEXT='<Manager className=\"org.redisson.tomcat.RedissonSessionManager\" configPath=\"${catalina.base}\/conf\/redisson.conf\" readMode=\"MEMORY\" updateMode=\"DEFAULT\" broadcastSessionEvents=\"false\"\/>'
+		sed -i '/<\/Context>/ s/.*/'"${REDIS_CONTEXT}"'\n&/' $LIFERAY_HOME/tomcat-9.0.17/conf/context.xml
 
 		echo 'singleServerConfig:' > $LIFERAY_HOME/tomcat-9.0.17/conf/redisson.conf
 		echo '  address: "${REDIS_URL}"' >> $LIFERAY_HOME/tomcat-9.0.17/conf/redisson.conf
