@@ -1,11 +1,11 @@
-[![Build Status](https://travis-ci.org/borxa/docker-liferay7-cluster.svg?branch=master)](https://travis-ci.org/borxa/docker-liferay7-cluster)
-# docker-liferay720-cluster
-Docker compose with Liferay 7.2.0 cluster:
+[![Build Status](https://travis-ci.org/borxa/docker-liferay7-cluster.svg?branch=7.2.1)](https://travis-ci.org/borxa/docker-liferay7-cluster)
+# docker-liferay721-cluster
+Docker compose with Liferay 7.2.1 cluster:
   - postgresql
   - elastic search 1
   - elastic search 2
-  - liferay 7.2.0 node 1
-  - liferay 7.2.0 node 2
+  - liferay 7.2.1 node 1
+  - liferay 7.2.1 node 2
   - redis
   - haproxy
   
@@ -24,5 +24,5 @@ Docker compose with Liferay 7.2.0 cluster:
 
   # Docker images form repository
 
-  docker pull borxa/liferay-cluster-node:latest
+  docker pull borxa/liferay-cluster-node:7.2.1
 

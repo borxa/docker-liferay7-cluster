@@ -18,7 +18,7 @@ main () {
 
 function show_motd() {
 	echo "
-	Starting Liferay 7.2.0 node.
+	Starting Liferay 7.2.1 node.
 	IP: $IP
   	LIFERAY_HOME: $LIFERAY_HOME
 
@@ -146,11 +146,14 @@ function set_redis_session() {
 
 	if [[ ! -z "$REDIS_URL" ]]; then
 
-		REDIS_CONTEXT='<Manager className=\"org.redisson.tomcat.RedissonSessionManager\" configPath=\"${catalina.base}\/conf\/redisson.conf\" readMode=\"MEMORY\" updateMode=\"DEFAULT\" broadcastSessionEvents=\"false\"\/>'
-		sed -i '/<\/Context>/ s/.*/'"${REDIS_CONTEXT}"'\n&/' $LIFERAY_HOME/tomcat-9.0.17/conf/context.xml
-
+		cp $LIFERAY_HOME/tomcat-9.0.17/conf/server-default.xml $LIFERAY_HOME/tomcat-9.0.17/conf/server.xml
+		cp $LIFERAY_HOME/tomcat-9.0.17/conf/context-redis.xml $LIFERAY_HOME/tomcat-9.0.17/conf/context.xml
+		
 		echo 'singleServerConfig:' > $LIFERAY_HOME/tomcat-9.0.17/conf/redisson.conf
 		echo '  address: "${REDIS_URL}"' >> $LIFERAY_HOME/tomcat-9.0.17/conf/redisson.conf
+	else
+		cp $LIFERAY_HOME/tomcat-9.0.17/conf/server-cluster-multicast.xml $LIFERAY_HOME/tomcat-9.0.17/conf/server.xml
+		cp $LIFERAY_HOME/tomcat-9.0.17/conf/context-default.xml $LIFERAY_HOME/tomcat-9.0.17/conf/context.xml
 	fi
 
 	echo " Continuing..."

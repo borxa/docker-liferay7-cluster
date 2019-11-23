@@ -7,15 +7,15 @@ RUN apk add --no-cache curl p7zip
 RUN addgroup -g 1001 liferay && \
     adduser -D -u 1002 -G liferay liferay
 
-ENV LIFERAY_HOME=/usr/local/liferay-ce-portal-7.2.0-ga1
-ENV LIFERAY_TOMCAT_URL=https://sourceforge.net/projects/lportal/files/Liferay%20Portal/7.2.0%20GA1/liferay-ce-portal-tomcat-7.2.0-ga1-20190531153709761.7z/download
+ENV LIFERAY_HOME=/usr/local/liferay-ce-portal-7.2.1-ga2
+ENV LIFERAY_TOMCAT_URL=https://sourceforge.net/projects/lportal/files/Liferay%20Portal/7.2.1%20GA2/liferay-ce-portal-tomcat-7.2.1-ga2-20191111141448326.7z/download
 
 WORKDIR /usr/local
 
 # Install Liferay
-RUN curl -fSL "$LIFERAY_TOMCAT_URL" -o liferay-ce-portal-tomcat-7.2.0-ga1.7z \
-      && 7za x liferay-ce-portal-tomcat-7.2.0-ga1.7z -y \
-      && rm liferay-ce-portal-tomcat-7.2.0-ga1.7z \
+RUN curl -fSL "$LIFERAY_TOMCAT_URL" -o liferay-ce-portal-tomcat-7.2.1-ga2.7z \
+      && 7za x liferay-ce-portal-tomcat-7.2.1-ga2.7z -y \
+      && rm liferay-ce-portal-tomcat-7.2.1-ga2.7z \
       && chown -R liferay:liferay $LIFERAY_HOME \
       && mkdir -p /data/liferay/document_library \
       && chown -R liferay:liferay /data
@@ -28,8 +28,8 @@ COPY config/wait-for-node.sh /
 USER liferay
 
 # Configure Tomcat session cluster
-COPY config/tomcat/server.xml $LIFERAY_HOME/tomcat-9.0.17/conf/
-COPY config/tomcat/context.xml $LIFERAY_HOME/tomcat-9.0.17/conf/
+COPY config/tomcat/server*.xml $LIFERAY_HOME/tomcat-9.0.17/conf/
+COPY config/tomcat/context*.xml $LIFERAY_HOME/tomcat-9.0.17/conf/
 COPY config/tomcat/web.xml $LIFERAY_HOME/tomcat-9.0.17/conf/
 COPY config/tomcat/web-root.xml $LIFERAY_HOME/tomcat-9.0.17/webapps/ROOT/WEB-INF/web.xml
 

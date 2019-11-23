@@ -8,7 +8,7 @@
         </category>
 
         <category name="org.jgroups">
-             <priority value="ALL" />
+             <priority value="INFO" />
         </category>
 
 </log4j:configuration>

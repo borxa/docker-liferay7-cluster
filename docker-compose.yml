@@ -2,7 +2,7 @@ version: '3.2'
 services:
   
   lb-haproxy:
-    container_name: lb-haproxy-lf720
+    container_name: lb-haproxy-lf721
     build:
       context: haproxy/.
       dockerfile: Dockerfile
@@ -11,77 +11,77 @@ services:
       - '8181:8181'
     hostname: lb-haproxy.local
     depends_on:
-      - liferay-720-node-1
-      - liferay-720-node-2  
+      - liferay-721-node-1
+      - liferay-721-node-2  
 
-  liferay-720-node-1:
-    container_name: liferay-720-node-1
+  liferay-721-node-1:
+    container_name: liferay-721-node-1
     build:
       context: liferay/.
       dockerfile: Dockerfile 
     environment:
       - JDBC_READ_DRIVER=org.postgresql.Driver
-      - JDBC_READ_URL=jdbc:postgresql://postgres-lfr720:5432/lportal
+      - JDBC_READ_URL=jdbc:postgresql://postgres-lfr721:5432/lportal
       - JDBC_READ_USERNAME=liferay
       - JDBC_READ_PASSWORD=liferay
       - JDBC_WRITE_DRIVER=org.postgresql.Driver
-      - JDBC_WRITE_URL=jdbc:postgresql://postgres-lfr720:5432/lportal
+      - JDBC_WRITE_URL=jdbc:postgresql://postgres-lfr721:5432/lportal
       - JDBC_WRITE_USERNAME=liferay
       - JDBC_WRITE_PASSWORD=liferay
       - ES_OPERATIONMODE=REMOTE
       - ES_CLUSTERNAME=elasticsearch
-      - ES_TRANSPORTADDRESSES=es-node-1-lfr720:9300
+      - ES_TRANSPORTADDRESSES=es-node-1-lfr721:9300
 #      - CLUSTER_UNICAST_FILENAME=jdbc_ping.xml
-#      - REDIS_URL=redis://redis-lfr720:6379
+      - REDIS_URL=redis://redis-lfr721:6379
     ports:
       - '6080:8080'
       - '21311:11311'
       - '8001:8000'
-    hostname: liferay-720-node-1.local
+    hostname: liferay-721-node-1.local
     volumes:
-      - lfr-720-dl-volume:/data/liferay/document_library
+      - lfr-721-dl-volume:/data/liferay/document_library
     depends_on:
-      - postgres-lfr720
-      - redis-lfr720
-      - es-node-1-lfr720
-      - es-node-2-lfr720
+      - postgres-lfr721
+      - redis-lfr721
+      - es-node-1-lfr721
+      - es-node-2-lfr721
     command: ["/entrypoint.sh", "run"]
 
-  liferay-720-node-2:
-    container_name: liferay-720-node-2
+  liferay-721-node-2:
+    container_name: liferay-721-node-2
     build:
       context: liferay/.
       dockerfile: Dockerfile 
     environment:
       - JDBC_READ_DRIVER=org.postgresql.Driver
-      - JDBC_READ_URL=jdbc:postgresql://postgres-lfr720:5432/lportal
+      - JDBC_READ_URL=jdbc:postgresql://postgres-lfr721:5432/lportal
       - JDBC_READ_USERNAME=liferay
       - JDBC_READ_PASSWORD=liferay
       - JDBC_WRITE_DRIVER=org.postgresql.Driver
-      - JDBC_WRITE_URL=jdbc:postgresql://postgres-lfr720:5432/lportal
+      - JDBC_WRITE_URL=jdbc:postgresql://postgres-lfr721:5432/lportal
       - JDBC_WRITE_USERNAME=liferay
       - JDBC_WRITE_PASSWORD=liferay
       - ES_OPERATIONMODE=REMOTE
       - ES_CLUSTERNAME=elasticsearch
-      - ES_TRANSPORTADDRESSES=es-node-1-lfr720:9300
+      - ES_TRANSPORTADDRESSES=es-node-1-lfr721:9300
 #     - CLUSTER_UNICAST_FILENAME=jdbc_ping.xml
-#     - REDIS_URL=redis://redis-lfr720:6379
+      - REDIS_URL=redis://redis-lfr721:6379
     ports:
       - '7080:8080'
       - '31311:11311'
       - '8002:8000'
-    hostname: liferay-720-node-2.local
+    hostname: liferay-721-node-2.local
     volumes:
-      - lfr-720-dl-volume:/data/liferay/document_library
+      - lfr-721-dl-volume:/data/liferay/document_library
     depends_on:
-      - postgres-lfr720
-      - redis-lfr720
-      - es-node-1-lfr720
-      - es-node-2-lfr720
-    command: ["/wait-for-node.sh", "liferay-720-node-1:8080", "--", "/entrypoint.sh", "run"]
+      - postgres-lfr721
+      - redis-lfr721
+      - es-node-1-lfr721
+      - es-node-2-lfr721
+    command: ["/wait-for-node.sh", "liferay-721-node-1:8080", "--", "/entrypoint.sh", "run"]
 
-  postgres-lfr720:
-    container_name: postgres-lfr720
+  postgres-lfr721:
+    container_name: postgres-lfr721
     image: postgres:10.1-alpine
     ports:
       - '5432:5432'
@@ -90,11 +90,11 @@ services:
       - POSTGRES_USER=liferay
       - POSTGRES_DB=lportal
   
-  es-node-1-lfr720:
-    container_name: elastic-search-1-lfr720
+  es-node-1-lfr721:
+    container_name: elastic-search-1-lfr721
     image: docker.elastic.co/elasticsearch/elasticsearch:6.5.0
     environment:
-      - node.name=es-node-1-lfr720
+      - node.name=es-node-1-lfr721
       - cluster.name=elasticsearch
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
@@ -103,15 +103,15 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - es-data1-lfr720:/usr/share/elasticsearch/data
+      - es-data1-lfr721:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
 
-  es-node-2-lfr720:
-    container_name: elastic-search-2-lfr720
+  es-node-2-lfr721:
+    container_name: elastic-search-2-lfr721
     image: docker.elastic.co/elasticsearch/elasticsearch:6.5.0
     environment:
-      - node.name=es-node-2-lfr720
+      - node.name=es-node-2-lfr721
       - cluster.name=elasticsearch
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
@@ -120,13 +120,13 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - es-data2-lfr720:/usr/share/elasticsearch/data
+      - es-data2-lfr721:/usr/share/elasticsearch/data
 
-  redis-lfr720:
-    container_name: redis-lfr720
+  redis-lfr721:
+    container_name: redis-lfr721
     image: redis:alpine
 
 volumes:
-  lfr-720-dl-volume:
-  es-data1-lfr720:
-  es-data2-lfr720:
+  lfr-721-dl-volume:
+  es-data1-lfr721:
+  es-data2-lfr721:
