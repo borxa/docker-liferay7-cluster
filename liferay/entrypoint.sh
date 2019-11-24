@@ -131,9 +131,9 @@ function set_cluster_cache() {
 		sed -i "s|\(cluster\.link\.channel\.properties\.control\.0=\).*\$|\1${CLUSTER_UNICAST_FILENAME}|" $LIFERAY_HOME/portal-ext.properties
 	
 		if ! grep -Fq -- -Djgroups.bind_addr= $LIFERAY_HOME/tomcat-9.0.17/bin/setenv.sh; then
-        		sed -i "s/CATALINA_OPTS=\"[^\"]*/& -Djgroups.bind_addr=$IP/g" $LIFERAY_HOME/tomcat-9.0.17/bin/setenv.sh
+        		sed -i "s/CATALINA_OPTS=\"[^\"]*/& -Djgroups.bind_addr=$IP/g" $LIFERAY_HOME/tomcat/bin/setenv.sh
 		else
-        		sed -i -E "s/bind_addr=\d+\.\d+\.\d+\.\d+/bind_addr=$IP/g" $LIFERAY_HOME/tomcat-9.0.17/bin/setenv.sh
+        		sed -i -E "s/bind_addr=\d+\.\d+\.\d+\.\d+/bind_addr=$IP/g" $LIFERAY_HOME/tomcat/bin/setenv.sh
 		fi
 	fi
 
@@ -146,14 +146,14 @@ function set_redis_session() {
 
 	if [[ ! -z "$REDIS_URL" ]]; then
 
-		cp $LIFERAY_HOME/tomcat-9.0.17/conf/server-default.xml $LIFERAY_HOME/tomcat-9.0.17/conf/server.xml
-		cp $LIFERAY_HOME/tomcat-9.0.17/conf/context-redis.xml $LIFERAY_HOME/tomcat-9.0.17/conf/context.xml
+		cp $LIFERAY_HOME/tomcat/conf/server-default.xml $LIFERAY_HOME/tomcat/conf/server.xml
+		cp $LIFERAY_HOME/tomcat/conf/context-redis.xml $LIFERAY_HOME/tomcat/conf/context.xml
 		
-		echo 'singleServerConfig:' > $LIFERAY_HOME/tomcat-9.0.17/conf/redisson.conf
-		echo '  address: "${REDIS_URL}"' >> $LIFERAY_HOME/tomcat-9.0.17/conf/redisson.conf
+		echo 'singleServerConfig:' > $LIFERAY_HOME/tomcat/conf/redisson.conf
+		echo '  address: "${REDIS_URL}"' >> $LIFERAY_HOME/tomcat/conf/redisson.conf
 	else
-		cp $LIFERAY_HOME/tomcat-9.0.17/conf/server-cluster-multicast.xml $LIFERAY_HOME/tomcat-9.0.17/conf/server.xml
-		cp $LIFERAY_HOME/tomcat-9.0.17/conf/context-default.xml $LIFERAY_HOME/tomcat-9.0.17/conf/context.xml
+		cp $LIFERAY_HOME/tomcat/conf/server-cluster-multicast.xml $LIFERAY_HOME/tomcat/conf/server.xml
+		cp $LIFERAY_HOME/tomcat/conf/context-default.xml $LIFERAY_HOME/tomcat/conf/context.xml
 	fi
 
 	echo " Continuing..."
@@ -162,7 +162,7 @@ function set_redis_session() {
 function run_portal() {
 
 	echo "Run Liferay Portal ..."
-	$LIFERAY_HOME/tomcat-9.0.17/bin/catalina.sh "$@"
+	$LIFERAY_HOME/tomcat/bin/catalina.sh "$@"
 }
 
 main "$@"
