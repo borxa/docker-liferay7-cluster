@@ -19,22 +19,18 @@ RUN curl -fSL "$LIFERAY_TOMCAT_URL" -o liferay.7z \
       && ln -s liferay* liferay \
       && cd liferay \
       && ln -s tomcat* tomcat \
-      && chown -R liferay:liferay * \
-      && mkdir -p /data/liferay/document_library \
-      && chown -R liferay:liferay /data
+      && mkdir -p /data/liferay/document_library
 
 COPY entrypoint.sh /
 
 # Wait for node for run in secuential mode
 COPY config/wait-for-node.sh /
 
-USER liferay
-
 # Configure Tomcat session cluster
 COPY config/tomcat/server*.xml $LIFERAY_HOME/tomcat/conf/
 COPY config/tomcat/context*.xml $LIFERAY_HOME/tomcat/conf/
-#COPY config/tomcat/web.xml $LIFERAY_HOME/tomcat/conf/
-#COPY config/tomcat/web-root.xml $LIFERAY_HOME/tomcat/webapps/ROOT/WEB-INF/web.xml
+COPY config/tomcat/web.xml $LIFERAY_HOME/tomcat/conf/
+COPY config/tomcat/web-root.xml $LIFERAY_HOME/tomcat/webapps/ROOT/WEB-INF/web.xml
 
 # Configure Liferay
 COPY config/portal-ext.properties $LIFERAY_HOME/
@@ -48,6 +44,12 @@ COPY config/log4j.dtd $LIFERAY_HOME/tomcat/webapps/ROOT/WEB-INF/classes/META-INF
 
 # Add Redis jars to tomcat
 COPY config/tomcat/*.jar $LIFERAY_HOME/tomcat/lib/
+
+# Set Liferay owner files
+RUN chown -R liferay:liferay $LIFERAY_HOME/. \
+     && chown -R liferay:liferay /data
+
+USER liferay
 
 EXPOSE 8080/tcp
 EXPOSE 11311/tcp
